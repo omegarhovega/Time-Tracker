@@ -1,16 +1,16 @@
-# Time Management App
+# Time Management App ⏰
 
 A desktop application built with Python and Tkinter for managing daily tasks and time block scheduling.
 
 <img src="Time_tracker.png" alt="Time Tracker" height="600"/>
 
-## Features
+## Features ✨
 - Focus on key daily tasks you want to complete
 - Time block scheduling to outline your day
 - Interactive UI with drag-and-drop support
 - Calendar navigation to plan different days and review your progress
 
-## Installation
+## Installation 🚀
 
 ### Prerequisites
 - Python 3.8 or higher installed on your system. To check, open Command Prompt (Windows) or Terminal (Mac/Linux) and type: `python --version`
@@ -51,7 +51,7 @@ A desktop application built with Python and Tkinter for managing daily tasks and
    - Type: `pip install -r requirements.txt`
    - This will install all necessary dependencies for the project
 
-## Usage
+## Usage 📋
 Run the application using:
 ```python
 python run.py
@@ -80,6 +80,6 @@ The full license text can be found in the [LICENSE](LICENSE) file in the reposit
 For more details about the GPL-3.0 license, visit:
 https://www.gnu.org/licenses/gpl-3.0.en.html
 
-## Support
+## Support 💬
 
 For support, please create an issue in the GitHub repository.
