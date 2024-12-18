@@ -55,6 +55,7 @@ A desktop application built with Python and Tkinter for managing daily tasks and
 Run the application using:
 ```python
 python run.py
+```
 
 To deactivate the virtual environment when you're done:
   - Simply type: `deactivate`
