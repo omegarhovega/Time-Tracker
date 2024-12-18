@@ -5,7 +5,7 @@ A desktop application built with Python and Tkinter for managing daily tasks and
 <img src="Time_tracker.png" alt="Time Tracker" height="600"/>
 
 ## Features
-- Focus on key daily tasks to complete
+- Focus on key daily tasks you want to complete
 - Time block scheduling to outline your day
 - Interactive UI with drag-and-drop support
 - Calendar navigation to plan different days and review your progress
