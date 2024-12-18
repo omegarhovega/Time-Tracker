@@ -60,3 +60,4 @@ python run.py
 To deactivate the virtual environment when you're done:
   - Simply type: `deactivate`
   - The `(venv)` prefix should disappear
+  - The venv folder can be deleted alternatively
