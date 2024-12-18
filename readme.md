@@ -2,7 +2,7 @@
 
 A desktop application built with Python and Tkinter for managing daily tasks and time blocks.
 
-<img src="Time_tracker.png" alt="Time Tracker" height="400"/>
+<img src="Time_tracker.png" alt="Time Tracker" height="600"/>
 
 ## Features
 - Daily task prioritization
