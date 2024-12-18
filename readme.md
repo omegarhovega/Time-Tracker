@@ -1,6 +1,6 @@
 # Time Management App
 
-A desktop application built with Python and Tkinter for managing daily tasks and time blocks.
+A desktop application built with Python and Tkinter for managing daily tasks and time block scheduling.
 
 <img src="Time_tracker.png" alt="Time Tracker" height="600"/>
 
