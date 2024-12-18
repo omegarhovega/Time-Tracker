@@ -51,7 +51,7 @@ A desktop application built with Python and Tkinter for managing daily tasks and
    - Type: `pip install -r requirements.txt`
    - This will install all necessary dependencies for the project
 
-## Usage 📋
+## Usage 🎮
 Run the application using:
 ```python
 python run.py
