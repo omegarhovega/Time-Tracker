@@ -61,4 +61,4 @@ To deactivate the virtual environment when you're done:
   - Simply type: `deactivate`
   - The `(venv)` prefix should disappear
   - To delete the venv thereafter if desired, type `rmdir /s /q venv` on Windows or `rm -rf venv` on Mac/Linux (deactivate the venv before deletion as per above)
-  - Alternatively, you can delete the venv folder in the project folder
+  - Alternatively, you can delete the venv folder in the project folder manually
