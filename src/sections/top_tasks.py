@@ -8,11 +8,13 @@ class TopTasksSection(tk.Frame):
     def __init__(self, parent, current_date):
         super().__init__(parent)
 
-        # Force the frame to keep its size
+        # Store reference to main window and ensure it's the root window
+        self.window = parent.winfo_toplevel()
+        
+        # Rest of your existing initialization code...
         self.dims = Dimensions()
         self.pack_propagate(False)
         self.grid_propagate(False)
-        # Set fixed size
         self.configure(width=parent.winfo_width(), height=self.dims.TOP_TASKS_HEIGHT)
         
         self.colors = Colors() 
@@ -20,16 +22,17 @@ class TopTasksSection(tk.Frame):
         self.current_date = current_date
         self.data_manager = DataManager()
         
-        # Initialize tracking
         self.checkboxes = {}
         self.task_frames = []
-        self.state = []  # to hold top tasks state
+        self.state = []
         
-        # Create a container for all tasks
         self.tasks_container = tk.Frame(
             self,
             bg=self.colors.PRIORITY_BOX_BG
         )
+        
+        # Setup keyboard shortcuts with explicit binding to root window
+        self.after(100, self._setup_shortcuts)  # Delay to ensure window is fully initialized
         
         self._setup_ui()
         self.load_tasks(current_date)
@@ -177,6 +180,29 @@ class TopTasksSection(tk.Frame):
         if len(text) > max_length:
             return text[:max_length-3] + "..."
         return text
+    
+    def _setup_shortcuts(self):
+        """Setup keyboard shortcuts for editing tasks"""
+        # Bind to both the root window and the frame itself
+        root = self.winfo_toplevel()
+        
+        # Define the bindings
+        shortcuts = {
+            '<Control-Key-1>': lambda e: self._handle_task_shortcut(0),
+            '<Control-Key-2>': lambda e: self._handle_task_shortcut(1),
+            '<Control-Key-3>': lambda e: self._handle_task_shortcut(2)
+        }
+        
+        # Apply bindings to root window
+        for shortcut, handler in shortcuts.items():
+            root.bind(shortcut, handler)
+            self.window.bind(shortcut, handler)
+
+    def _handle_task_shortcut(self, index):
+        """Handle keyboard shortcut for editing a specific task"""
+        if index < len(self.state):
+            self._edit_task(index)
+        return "break"
 
     def _toggle_task(self, index):
         """Handle task completion toggle"""
@@ -224,10 +250,16 @@ class TopTasksSection(tk.Frame):
         def save():
             self._save_task_edit(index, entry_var.get().strip(), dialog)
         
+        def handle_escape(event):
+            dialog.destroy()
+        
         save_btn = tk.Button(dialog, text="Save", command=save)
         save_btn.pack(pady=5)
         
+        # Bind Return and Escape keys
         entry.bind("<Return>", lambda e: save())
+        dialog.bind("<Escape>", handle_escape)
+        entry.bind("<Escape>", handle_escape)
 
     def _save_task_edit(self, index, new_text, dialog):
         """Save edited task text"""

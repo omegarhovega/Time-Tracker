@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Toplevel, StringVar, OptionMenu, messagebox
+from tkinter import Toplevel, StringVar, OptionMenu, messagebox, ttk
 from datetime import datetime, timedelta
 from src.models.data_classes import Task, Colors, Dimensions, UIConfig
 from src.utils.tooltip import TooltipManager
@@ -95,6 +95,11 @@ class TimeBlocksSection(tk.Frame):
             canvas.pack(fill="both", expand=True)
             self.canvases[name] = canvas
 
+    def _handle_new_task_shortcut(self, event):
+        """Handle Ctrl+N shortcut for creating new task"""
+        self._show_add_task_dialog()
+        return "break"  # Prevents the event from propagating
+
     def _setup_ui(self):
         """Set up the main UI components"""
         # Create title frame
@@ -105,6 +110,9 @@ class TimeBlocksSection(tk.Frame):
         )
         title_frame.pack(fill="x")
         title_frame.pack_propagate(False)
+        
+        # Bind Ctrl+N to new task creation
+        self.window.bind('<Control-n>', self._handle_new_task_shortcut)
         
         # Add title
         title = tk.Label(
@@ -251,24 +259,67 @@ class TimeBlocksSection(tk.Frame):
         hours = [f"{i:02}" for i in range(24)]
         minutes = ["00", "15", "30", "45"]
 
-        tk.Label(dialog, text="Task Name").grid(row=0, column=0, padx=5, pady=5, sticky="w")
-        tk.Entry(dialog, textvariable=task_name).grid(row=0, column=1, padx=5, pady=5)
+        content_frame = tk.Frame(dialog)
+        content_frame.grid(row=0, column=0, padx=5, pady=5)
 
-        for row, (hour_var, minute_var, label) in enumerate([
-            (start_hour, start_minute, "Start Time"),
-            (end_hour, end_minute, "End Time")
-        ], 1):
-            tk.Label(dialog, text=label).grid(row=row, column=0, padx=5, pady=5, sticky="w")
-            OptionMenu(dialog, hour_var, *hours).grid(row=row, column=1, padx=5, pady=5)
-            OptionMenu(dialog, minute_var, *minutes).grid(row=row, column=2, padx=5, pady=5)
+        tk.Label(content_frame, text="Task Name").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        name_entry = tk.Entry(content_frame, textvariable=task_name)
+        name_entry.grid(row=0, column=1, padx=5, pady=5)
 
-        save_button = tk.Button(dialog, text="Save" if task is None else "Update", 
-                              command=lambda: self._save_task(dialog, task_name, start_hour, start_minute, end_hour, end_minute, task))
+        # --------------------------
+        # Start Time section
+        # --------------------------
+        tk.Label(content_frame, text="Start Time").grid(row=1, column=0, padx=5, pady=5, sticky="w")
+
+        start_hour_combo = ttk.Combobox(content_frame, textvariable=start_hour, 
+                                        values=hours, width=3, state="readonly")
+        start_hour_combo.grid(row=1, column=1, padx=5, pady=5)
+        
+        start_minute_combo = ttk.Combobox(content_frame, textvariable=start_minute, 
+                                          values=minutes, width=3, state="readonly")
+        start_minute_combo.grid(row=1, column=2, padx=5, pady=5)
+
+        # --------------------------
+        # End Time section
+        # --------------------------
+        tk.Label(content_frame, text="End Time").grid(row=2, column=0, padx=5, pady=5, sticky="w")
+
+        end_hour_combo = ttk.Combobox(content_frame, textvariable=end_hour, 
+                                      values=hours, width=3, state="readonly")
+        end_hour_combo.grid(row=2, column=1, padx=5, pady=5)
+        
+        end_minute_combo = ttk.Combobox(content_frame, textvariable=end_minute, 
+                                        values=minutes, width=3, state="readonly")
+        end_minute_combo.grid(row=2, column=2, padx=5, pady=5)
+
+        save_button = tk.Button(
+            content_frame, 
+            text="Save" if task is None else "Update",
+            command=lambda: self._save_task(dialog, task_name, start_hour, 
+                                            start_minute, end_hour, end_minute, task)
+        )
         save_button.grid(row=3, column=1, pady=10)
 
         if task:
-            delete_button = tk.Button(dialog, text="Delete", command=lambda: self._delete_task(dialog, task))
+            delete_button = tk.Button(
+                content_frame, text="Delete",
+                command=lambda: self._delete_task(dialog, task)
+            )
             delete_button.grid(row=3, column=2, pady=10)
+
+        def handle_return(event):
+            self._save_task(dialog, task_name, start_hour, start_minute, end_hour, end_minute, task)
+
+        def handle_escape(event):
+            dialog.destroy()
+
+        dialog.bind('<Return>', handle_return)
+        dialog.bind('<Escape>', handle_escape)
+        name_entry.bind('<Return>', handle_return)
+        name_entry.bind('<Escape>', handle_escape)
+
+        # Set focus to the name entry so the user can immediately type
+        name_entry.focus_set()
 
     def _save_time_blocks(self):
         """Save all time blocks to storage"""

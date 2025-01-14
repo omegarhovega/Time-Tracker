@@ -8,6 +8,9 @@ class DateNavigationBar(tk.Frame):
     def __init__(self, parent, initial_date, on_date_change):
         super().__init__(parent)
         
+        # Store reference to main window
+        self.window = parent.winfo_toplevel()
+        
         # Force the frame to keep its size
         self.dims = Dimensions()
         self.pack_propagate(False)
@@ -19,7 +22,24 @@ class DateNavigationBar(tk.Frame):
         self.config = UIConfig()
         self.current_date = initial_date
         self.on_date_change = on_date_change
+        
+        # Setup keyboard shortcuts
+        self._setup_shortcuts()
+        
         self._setup_ui()
+
+    def _setup_shortcuts(self):
+        """Setup keyboard shortcuts for date navigation"""
+        # Bind arrow keys for date navigation
+        self.window.bind('<Left>', lambda e: self._change_date(-1))
+        self.window.bind('<Right>', lambda e: self._change_date(1))
+
+    def _change_date(self, days: int):
+        """Change the current date by the specified number of days"""
+        self.current_date += timedelta(days=days)
+        self.date_label.config(text=self.current_date.strftime("%A, %d %B %Y"))
+        self.on_date_change(self.current_date)
+        return "break"  # Prevents the event from propagating
     
     def _setup_ui(self):
         """Set up the navigation controls with calendar and today button"""
