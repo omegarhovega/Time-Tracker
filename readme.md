@@ -9,7 +9,7 @@ A desktop application built with Python and Tkinter for managing daily tasks and
 - Flexible time block scheduling to outline your day
 - Interactive UI with drag-and-drop support to easily change your schedule on the fly
 - Calendar navigation to plan different days and review your progress
-- Keyboard Shortcuts for even faster use (see below)
+- Keyboard shortcuts for even faster use (see below)
 
 ## Installation 🚀
 
