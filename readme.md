@@ -65,9 +65,9 @@ To deactivate the virtual environment when you're done:
 To delete the venv if no longer needed, type `rmdir /s /q venv` on Windows or `rm -rf venv` on Mac/Linux (deactivate the venv before deletion as per above). Alternatively, you can delete the venv folder in the project folder manually.
 
 ## Shortcuts 🎮
-- Ctrl + 1-3: Set top task 1-3
-- Ctrl + N: create new time block
-- Left/right arrow: navigate to previous/next day 
+- `Ctrl + 1-3`: Set top task 1-3
+- `Ctrl + N`: create new time block
+- `←` or `→`: navigate to previous or next day 
 
 ## Contributing 🤝
 
