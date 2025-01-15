@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
+
 
 @dataclass
 class Task:
@@ -9,10 +10,12 @@ class Task:
     box_id: Optional[int] = None
     text_id: Optional[int] = None
 
+
 @dataclass
 class TopTask:
     text: str
     completed: bool = False
+
 
 @dataclass
 class InteractionState:
@@ -53,27 +56,28 @@ class InteractionState:
             if hasattr(self, key):
                 setattr(self, key, value)
         # Restore top_tasks if it wasn't explicitly updated
-        if 'top_tasks' not in kwargs:
+        if "top_tasks" not in kwargs:
             self.top_tasks = preserved_tasks
         return self
+
 
 @dataclass(frozen=True)
 class Colors:
     # Background colors
     BACKGROUND: List[str] = field(default_factory=lambda: ["#F7F5EE", "#EBE9DC"])
     HEADER: str = "#EBE9DC"
-    
+
     # Task colors
     TASK: str = "#D4CFBE"
     TASK_ACTIVE: str = "#a8c7e6"
     TASK_TEXT: str = "#38352A"
-    
+
     # Border colors
     BORDER_DEFAULT: str = "#949185"
     BORDER_ACTIVE: str = "#2b579a"
-    
+
     # Priority task colors
-    PRIORITY_BOX_BG: str ="#DBD5C2"
+    PRIORITY_BOX_BG: str = "#DBD5C2"
     PRIORITY_NUMBER_BG: str = "#E8931A"  # Orange background for priority numbers
     PRIORITY_NUMBER_TEXT: str = "#EBE9DC"
     PRIORITY_TASK_BG: str = "#DBD5C2"
@@ -83,10 +87,10 @@ class Colors:
     # Add button colors
     ADD_BUTTON_BG: str = "#E8931A"  # Same as priority numbers for consistency
     ADD_BUTTON_TEXT: str = "white"
-    
+
     # Time marker color
     TIME_MARKER: str = "#E8931A"
-    
+
     # Handle color (kept for compatibility)
     HANDLE: str = "#6fa8dc"
 
@@ -96,61 +100,64 @@ class Dimensions:
     # Base units
     HOUR_HEIGHT: int = 32  # Height per hour in the time grid
     HOUR_MARKER_OFFSET: int = 22  # Offset for the current time marker
-    
+
     # Fixed section heights
     NAV_HEIGHT: int = 40  # Navigation bar height
     SCHEDULE_TITLE_HEIGHT: int = 30  # "TIME BLOCKS" title height
-    
+
     # Top tasks section components
     TOP_TASK_TITLE_HEIGHT: int = 28  # Title + padding
     TOP_TASK_FRAME_HEIGHT: int = 41  # Single task frame height
     TOP_TASK_SPACING: int = 2  # Spacing between task frames
     TOP_TASK_BOTTOM_PADDING: int = 10  # Bottom padding
-    
+
     # Other measurements
     CORNER_RADIUS: int = 8
     BORDER_WIDTH: int = 1
-    
+
     # Canvas widths
-    CANVAS_WIDTH: Dict[str, int] = field(default_factory=lambda: {
-        "now": 50,
-        "time": 50,
-        "task": 300
-    })
-    
+    CANVAS_WIDTH: Dict[str, int] = field(
+        default_factory=lambda: {"now": 50, "time": 50, "task": 300}
+    )
+
     @property
     def TOP_TASKS_HEIGHT(self) -> int:
         """Total height of the top tasks section"""
-        return (self.TOP_TASK_TITLE_HEIGHT +  # Title area
-                (self.TOP_TASK_FRAME_HEIGHT * 3) +  # Three task frames
-                (self.TOP_TASK_SPACING * 2) +  # Spacing between tasks
-                self.TOP_TASK_BOTTOM_PADDING)  # Bottom padding
-    
+        return (
+            self.TOP_TASK_TITLE_HEIGHT  # Title area
+            + (self.TOP_TASK_FRAME_HEIGHT * 3)  # Three task frames
+            + (self.TOP_TASK_SPACING * 2)  # Spacing between tasks
+            + self.TOP_TASK_BOTTOM_PADDING
+        )  # Bottom padding
+
     @property
     def CANVAS_HEIGHT(self) -> int:
         """Height of the time grid canvas (24 hours)"""
         return 24 * self.HOUR_HEIGHT  # 24 hours * height per hour
-    
+
     @property
     def TIME_BLOCKS_HEIGHT(self) -> int:
         """Total height of the time blocks section including title"""
         return self.SCHEDULE_TITLE_HEIGHT + self.CANVAS_HEIGHT
-    
+
     @property
     def TOTAL_HEIGHT(self) -> int:
         """Total window height"""
-        return (self.NAV_HEIGHT +  # Date navigation bar
-                self.TOP_TASKS_HEIGHT +  # Priority tasks section
-                self.TIME_BLOCKS_HEIGHT)  # Time blocks section (including title)
+        return (
+            self.NAV_HEIGHT  # Date navigation bar
+            + self.TOP_TASKS_HEIGHT  # Priority tasks section
+            + self.TIME_BLOCKS_HEIGHT
+        )  # Time blocks section (including title)
+
 
 @dataclass(frozen=True)
 class UIConfig:
     SAVE_FILE: str = "tasks.json"
     FONT_FAMILY: str = "Arial"
-    FONT_SIZES: Dict[str, int] = field(default_factory=lambda: {
-        "normal": 10,
-        "bold": 12 
-    })
+    FONT_SIZES: Dict[str, int] = field(
+        default_factory=lambda: {"normal": 10, "bold": 12}
+    )
+
 
 @dataclass(frozen=True)
 class AppConstants:
